@@ -39,7 +39,7 @@ cache.get(key, defaultValue)
 cache.del(key)
 
 // check cache availability and status
-// not exist:  status ==== false
+// not exist:  status === false
 // when stale: status === 'stale'
 // when hit:   status === 'hit'
 const status = cache.has(key)
