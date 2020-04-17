@@ -1,7 +1,7 @@
 import SQLite3, { Database } from 'better-sqlite3'
-import { read, write, md5name, purgeEmptyPath } from './utils'
 import fs from 'fs-extra'
 import { join as pathJoin } from 'path'
+import { md5name, purgeEmptyPath, read, write } from './utils'
 
 const DDL = `
 CREATE TABLE IF NOT EXISTS cache (key TEXT PRIMARY KEY, value BLOB, filename TEXT, ttl REAL NOT NULL);

@@ -1,15 +1,15 @@
 import { createHash } from 'crypto'
 import fs from 'fs-extra'
-import { join as pathJoin } from 'path'
+import path from 'path'
 
 export function write(dir: string, filename: string, data: Buffer) {
-  const file = pathJoin(dir, filename)
+  const file = path.join(dir, filename)
   fs.mkdirpSync(file.slice(0, file.lastIndexOf('/')))
   return fs.writeFileSync(file, data)
 }
 
 export function read(dir: string, filename: string) {
-  return fs.readFileSync(pathJoin(dir, filename))
+  return fs.readFileSync(path.join(dir, filename))
 }
 
 export function md5name(buf: string) {
@@ -21,24 +21,17 @@ export function md5name(buf: string) {
   return [p0, p1, pe].join('/') + '.v'
 }
 
-export async function purgeEmptyPath(path: string) {
-  if (!(await fs.pathExists(path))) return false
-
-  const dir = await fs.readdir(path)
-  if (dir.length === 0) {
-    await fs.rmdir(path)
-    return true
-  }
+export async function purgeEmptyPath(dir: string): Promise<boolean> {
+  if (!(await fs.pathExists(dir))) return false
 
   let empty = true
-  for (const f of dir) {
-    const subPath = pathJoin(path, f)
-    const stat = await fs.stat(subPath)
-    empty = stat.isDirectory()
-      ? (await purgeEmptyPath(subPath)) && empty
-      : false
+  const files = await fs.readdir(dir)
+  for (const f of files) {
+    const sub = path.join(dir, f)
+    const stat = await fs.stat(sub)
+    empty = stat.isDirectory() ? (await purgeEmptyPath(sub)) && empty : false
   }
 
-  if (empty) await fs.rmdir(path)
+  if (empty) await fs.rmdir(dir)
   return empty
 }
