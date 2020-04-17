@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "rm -rf dist && npm run build",
     "lint": "eslint src/*.ts test/*.ts",
     "test": "NODE_ENV=test mocha --require ts-node/register test/**/*.test.ts",
     "test-cov": "NODE_ENV=test nyc mocha test/*.test.ts"
