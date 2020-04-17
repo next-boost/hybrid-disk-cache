@@ -21,17 +21,22 @@ export function md5name(buf: string) {
   return [p0, p1, pe].join('/') + '.v'
 }
 
-export async function purgeEmptyPath(dir: string): Promise<boolean> {
-  if (!(await fs.pathExists(dir))) return false
-
+async function purge(dir: string): Promise<boolean> {
   let empty = true
   const files = await fs.readdir(dir)
   for (const f of files) {
     const sub = path.join(dir, f)
     const stat = await fs.stat(sub)
-    empty = stat.isDirectory() ? (await purgeEmptyPath(sub)) && empty : false
+    empty = stat.isDirectory() ? (await purge(sub)) && empty : false
   }
 
   if (empty) await fs.rmdir(dir)
   return empty
+}
+
+export async function purgeEmptyPath(dir: string): Promise<boolean> {
+  if (fs.pathExistsSync(dir)) {
+    return await purge(dir)
+  }
+  return false
 }
