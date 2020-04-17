@@ -89,7 +89,7 @@ class Cache {
     this.db.prepare('DELETE FROM cache WHERE key = ?').run(key)
   }
 
-  purge = () => {
+  purge() {
     // ttl + tbd < now => ttl < now - tbd
     const now = new Date().getTime() / 1000 - this.tbd
     const rv = this.db

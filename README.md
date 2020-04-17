@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/rjyo/hybrid-disk-cache/badge.svg?branch=master)](https://coveralls.io/github/rjyo/hybrid-disk-cache?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/270469eb02421e5c7547/maintainability)](https://codeclimate.com/github/rjyo/hybrid-disk-cache/maintainability)
+
 # hybrid-disk-cache
 
 A hybrid disk cache library that utilized both the solid SQLite3 and file system.
