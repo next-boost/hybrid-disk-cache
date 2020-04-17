@@ -78,7 +78,7 @@ class Cache {
     const rv = this.db
       .prepare('SELECT filename FROM cache WHERE key = ?')
       .get(key)
-    this._delKeyAndFile(key, rv.filename)
+    this._delKeyAndFile(key, rv?.filename)
   }
 
   _delKeyAndFile(key: string, filename: string) {

@@ -67,6 +67,7 @@ describe('disk cache with ttl', () => {
     expect(cache.get('A')).to.deep.eq(Buffer.from('1'))
     cache.del('A')
     expect(cache.get('A')).to.be.undefined
+    cache.del('not-exist')
   })
 
   it('purge', async () => {
