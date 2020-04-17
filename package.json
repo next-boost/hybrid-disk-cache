@@ -18,6 +18,10 @@
     "email": "jyo.rakuraku@gmail.com"
   },
   "homepage": "https://github.com/rjyo/hybrid-disk-cache",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rjyo/hybrid-disk-cache.git"
+  },
   "license": "MIT",
   "dependencies": {
     "better-sqlite3": "^6.0.1",
