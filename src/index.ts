@@ -20,10 +20,10 @@ class Cache {
   db: Database
   ttl = 3600 // time to live
   tbd = 3600 // time before deletion
-  path = null
+  path = pathJoin(process.env.TMPDIR || '/tmp', 'hdc')
 
   constructor({ path, ttl, tbd }: CacheOptions = {}) {
-    this.path = path || pathJoin(process.env.TMPDIR || '/tmp', 'hdc')
+    if (path) this.path = path
     fs.mkdirpSync(this.path)
     if (ttl) this.ttl = ttl
     if (tbd) this.tbd = tbd
