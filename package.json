@@ -1,6 +1,6 @@
 {
   "name": "hybrid-disk-cache",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A hybrid disk cache utilize both the database and the file system.",
   "main": "dist/index.js",
   "scripts": {
