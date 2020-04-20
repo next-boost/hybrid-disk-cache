@@ -78,28 +78,26 @@ class Cache {
     const rv = this.db
       .prepare('SELECT filename FROM cache WHERE key = ?')
       .get(key)
-    this._delKeyAndFile(key, rv?.filename)
+    this.db.prepare('DELETE FROM cache WHERE key = ?').run(key)
+    this._delFile(rv?.filename)
   }
 
-  _delKeyAndFile(key: string, filename: string) {
-    if (filename) {
-      const f = pathJoin(this.path, filename)
-      fs.unlink(f).catch()
-    }
-    this.db.prepare('DELETE FROM cache WHERE key = ?').run(key)
+  _delFile(filename: string) {
+    if (!filename) return
+    const f = pathJoin(this.path, filename)
+    fs.unlink(f).catch()
   }
 
   purge() {
     // ttl + tbd < now => ttl < now - tbd
     const now = new Date().getTime() / 1000 - this.tbd
-    const rv = this.db
+    const rows = this.db
       .prepare('SELECT key, filename FROM cache WHERE ttl < ?')
       .all(now)
-    for (const row of rv) {
-      this._delKeyAndFile(row.key, row.filename)
-    }
+    this.db.prepare('DELETE FROM cache WHERE ttl < ?').run(now)
+    for (const row of rows) this._delFile(row.filename)
     purgeEmptyPath(this.path)
-    return rv.length
+    return rows.length
   }
 }
 
