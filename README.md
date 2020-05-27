@@ -21,7 +21,7 @@ Searching for the index will always use SQLite3's index.
 
 This hybrid idea is inspired by [`python-diskcache`](https://github.com/grantjenks/python-diskcache). We used it in our Python production stack, and it works just as great as what we'd expected.
 
-## API
+## APIs
 
 ```javascript
 // tbd, time before deletion: This is used to control how long a key
@@ -41,13 +41,13 @@ cache.get(key, defaultValue)
 cache.del(key)
 
 // check cache availability and status
-// not exist:  status === false
+// not exist:  status === 'miss'
 // when stale: status === 'stale'
 // when hit:   status === 'hit'
 const status = cache.has(key)
 
 // if you want to serve even the stale value
-if (cache.has(key)) {
+if (cache.has(key) !== 'miss') {
     const value = cache.get(key)
 }
 
