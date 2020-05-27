@@ -41,9 +41,7 @@ cache.get(key, defaultValue)
 cache.del(key)
 
 // check cache availability and status
-// not exist:  status === 'miss'
-// when stale: status === 'stale'
-// when hit:   status === 'hit'
+// status in 'miss' | 'stale' | 'hit'
 const status = cache.has(key)
 
 // if you want to serve even the stale value
