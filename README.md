@@ -30,7 +30,9 @@ This hybrid idea is inspired by [`python-diskcache`](https://github.com/grantjen
 const cache = new Cache({ path, ttl, tbd })
 
 // set. if ttl empty, use the cache's ttl
-cache.set(key, value, ttl)
+cache.set(key, value)
+// set. will expire in 5 seconds
+cache.set(key, value, 5)
 
 // get
 cache.get(key, defaultValue)
