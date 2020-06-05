@@ -29,7 +29,7 @@ class Cache {
     if (tbd) this.tbd = tbd
 
     const db = new SQLite3(pathJoin(this.path, 'cache.db'))
-    db.pragma('journal_mode = WAL')
+    db.exec('PRAGMA journal_mode = WAL')
     for (const s of DDL.trim().split('\n')) {
       db.prepare(s).run()
     }
