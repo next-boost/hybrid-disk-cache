@@ -4,6 +4,10 @@
 
 A hybrid disk cache library that utilized both the solid SQLite3 database and the file system.
 
+```bash
+npm i hybrid-disk-cache
+```
+
 When the value is larger than 10 kilobytes, it will be written to the file system, otherwise saved in SQLite3 database.
 
 The benefits of using this kind of hybrid cache are:
