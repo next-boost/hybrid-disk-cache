@@ -20,8 +20,7 @@ Also, here are some bonus:
 - 100% test coverage
 - Pure Typescript
 - Used in production with 300K keys
-
-Searching for the index will always use SQLite3's index.
+- SQLite3's indices will always be used when searching for a key. (which is FAST)
 
 This hybrid idea is inspired by [`python-diskcache`](https://github.com/grantjenks/python-diskcache). We used it in our Python production stack, and it works just as great as what we'd expected.
 
