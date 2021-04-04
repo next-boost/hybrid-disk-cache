@@ -10,7 +10,7 @@ CREATE INDEX IF NOT EXISTS cache_ttl ON cache (ttl);
 
 type CacheStatus = 'hit' | 'stale' | 'miss'
 
-interface CacheOptions {
+export interface CacheOptions {
   path?: string
   ttl?: number
   tbd?: number
