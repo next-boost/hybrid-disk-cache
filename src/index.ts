@@ -36,7 +36,7 @@ class Cache {
     this.db = db
   }
 
-  set(key: string, value: Buffer, ttl?: number) {
+  async set(key: string, value: Buffer, ttl?: number) {
     if (!ttl) ttl = this.ttl
 
     const insert = this.db.prepare(
@@ -59,7 +59,7 @@ class Cache {
     })
   }
 
-  get(key: string, defaultValue?: Buffer): Buffer | undefined {
+  async get(key: string, defaultValue?: Buffer): Promise<Buffer | undefined> {
     const rv = this.db
       .prepare('SELECT value, filename FROM cache WHERE key = ?')
       .get(key)
@@ -68,13 +68,13 @@ class Cache {
     return rv.value
   }
 
-  has(key: string): CacheStatus {
+  async has(key: string): Promise<CacheStatus> {
     const now = new Date().getTime() / 1000
     const rv = this.db.prepare('SELECT ttl FROM cache WHERE key = ?').get(key)
     return !rv ? 'miss' : rv.ttl > now ? 'hit' : 'stale'
   }
 
-  del(key: string) {
+  async del(key: string) {
     const rv = this.db
       .prepare('SELECT filename FROM cache WHERE key = ?')
       .get(key)
@@ -88,7 +88,7 @@ class Cache {
     fs.unlink(f).catch()
   }
 
-  purge() {
+  async purge() {
     // ttl + tbd < now => ttl < now - tbd
     const now = new Date().getTime() / 1000 - this.tbd
     const rows = this.db

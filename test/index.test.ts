@@ -23,32 +23,32 @@ describe('disk cache with ttl', () => {
     expect(cache.path).to.eq('/tmp/hdc')
   })
 
-  it('set / get', () => {
+  it('set / get', async () => {
     const cache = new Cache()
     const v = Buffer.from('B')
-    cache.set('A', v)
-    expect(cache.get('A')).to.deep.eq(v)
+    await cache.set('A', v)
+    expect(await cache.get('A')).to.deep.eq(v)
 
     const v2 = Buffer.from('AAA')
-    cache.set('A', v2)
-    expect(cache.get('A')).to.deep.eq(v2)
+    await cache.set('A', v2)
+    expect(await cache.get('A')).to.deep.eq(v2)
 
     const defaultValue = Buffer.from('AA')
-    expect(cache.get('B', defaultValue)).to.eq(defaultValue)
+    expect(await cache.get('B', defaultValue)).to.eq(defaultValue)
   })
 
   it('set / get stale / hit / miss', async () => {
     const cache = new Cache()
     const key = 'key:1'
-    cache.set(key, Buffer.from('1'), 0.8)
-    let s = cache.has(key)
+    await cache.set(key, Buffer.from('1'), 0.8)
+    let s = await cache.has(key)
     expect(s).to.eq('hit')
     await sleep(1000)
-    s = cache.has(key)
+    s = await cache.has(key)
     expect(s).to.eq('stale')
-    const v = cache.get(key)
+    const v = await cache.get(key)
     expect(v).to.deep.eq(Buffer.from('1'))
-    s = cache.has('key:2')
+    s = await cache.has('key:2')
     expect(s).to.eq('miss')
   })
 
@@ -57,17 +57,17 @@ describe('disk cache with ttl', () => {
     const key1 = 'key:l1'
     const d = new Array(20000).fill('A')
     const buf = Buffer.from(d)
-    cache.set(key1, buf, 0.8)
-    expect(cache.get(key1)).to.deep.eq(buf)
+    await cache.set(key1, buf, 0.8)
+    expect(await cache.get(key1)).to.deep.eq(buf)
   })
 
-  it('del / get miss', () => {
+  it('del / get miss', async () => {
     const cache = new Cache()
     cache.set('A', Buffer.from('1'))
-    expect(cache.get('A')).to.deep.eq(Buffer.from('1'))
-    cache.del('A')
-    expect(cache.get('A')).to.be.undefined
-    cache.del('not-exist')
+    expect(await cache.get('A')).to.deep.eq(Buffer.from('1'))
+    await cache.del('A')
+    expect(await cache.get('A')).to.be.undefined
+    await cache.del('not-exist')
   })
 
   it('purge', async () => {
@@ -75,10 +75,10 @@ describe('disk cache with ttl', () => {
     const key1 = 'key:l1'
     const d = new Array(20000).fill('A')
     const buf = Buffer.from(d)
-    cache.set(key1, buf)
-    expect(cache.get(key1)).to.deep.eq(buf)
+    await cache.set(key1, buf)
+    expect(await cache.get(key1)).to.deep.eq(buf)
     await sleep(500)
-    cache.purge()
-    expect(cache.get(key1)).to.be.undefined
+    await cache.purge()
+    expect(await cache.get(key1)).to.be.undefined
   })
 })
