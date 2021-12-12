@@ -21,6 +21,7 @@ export class Adapter {
     console.log(`  Cache located at ${this.cache.path}`)
     // purge timer
     this.initPurgeTimer()
+    return this.cache
   }
 
   /**
