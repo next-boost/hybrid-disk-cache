@@ -23,13 +23,13 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install npm dependencies
-      run: npm install
+      run: yarn
 
     - name: Run lint
-      run: npm run lint
+      run: yarn lint
 
     - name: Run tests
-      run: npm run test-cov
+      run: yarn test-cov
 
     - name: Coveralls
       uses: coverallsapp/github-action@master

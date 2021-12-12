@@ -1,11 +1,11 @@
-[![Coverage Status](https://coveralls.io/repos/github/rjyo/hybrid-disk-cache/badge.svg?branch=master)](https://coveralls.io/github/rjyo/hybrid-disk-cache?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/270469eb02421e5c7547/maintainability)](https://codeclimate.com/github/rjyo/hybrid-disk-cache/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/next-boost/hybrid-disk-cache/badge.svg?branch=master)](https://coveralls.io/github/next-boost/hybrid-disk-cache?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/270469eb02421e5c7547/maintainability)](https://codeclimate.com/github/next-boost/hybrid-disk-cache/maintainability)
 
 # hybrid-disk-cache
 
 A hybrid disk cache library that utilized both the solid SQLite3 database and the file system.
 
 ```bash
-npm i hybrid-disk-cache
+yarn add @next-boost/hybrid-disk-cache
 ```
 
 When the value is larger than 10 kilobytes, it will be written to the file system, otherwise saved in SQLite3 database.
@@ -61,13 +61,13 @@ if (cache.has(key) === 'hit') {
 cache.purge()
 ```
 
-Check [`index.test.ts`](https://github.com/rjyo/hybrid-disk-cache/blob/master/test/index.test.ts) for examples.
+Check [`index.test.ts`](https://github.com/next-boost/hybrid-disk-cache/blob/master/test/index.test.ts) for examples.
 
 ## Benchmarks
 
 With a series of 10B ~ 500KB data writing and reading, here are the results on a Samsung 860 EVO SATA SSD:
 
-Here is the [benchmark source code](https://github.com/rjyo/hybrid-disk-cache/blob/master/src/bench.ts).
+Here is the [benchmark source code](https://github.com/next-boost/hybrid-disk-cache/blob/master/src/bench.ts).
 
 ```
 > cache located at: /tmp/hdc

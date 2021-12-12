@@ -1,11 +1,11 @@
 {
-  "name": "hybrid-disk-cache",
+  "name": "@next-boost/hybrid-disk-cache",
   "version": "0.2.0",
   "description": "A hybrid disk cache utilize both the database and the file system.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "rm -rf dist && npm run build",
+    "prepublishOnly": "rm -rf dist && yarn build",
     "lint": "eslint src/*.ts test/*.ts",
     "test": "NODE_ENV=test mocha --require ts-node/register test/**/*.test.ts",
     "test-cov": "NODE_ENV=test nyc mocha test/*.test.ts"
@@ -18,10 +18,10 @@
     "name": "Rakuraku Jyo",
     "email": "jyo.rakuraku@gmail.com"
   },
-  "homepage": "https://github.com/rjyo/hybrid-disk-cache",
+  "homepage": "https://github.com/next-boost/hybrid-disk-cache",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rjyo/hybrid-disk-cache.git"
+    "url": "https://github.com/next-boost//hybrid-disk-cache.git"
   },
   "license": "MIT",
   "dependencies": {
