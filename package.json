@@ -70,5 +70,8 @@
     "ttl",
     "sqlite3",
     "cache"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
