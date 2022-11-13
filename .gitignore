@@ -77,3 +77,4 @@ public/sitemap/*.xml
 dist
 coverage
 .nyc_output
+.tmp
