@@ -10,7 +10,8 @@ export class Adapter {
    * @param conf the cache's config, with defaults:
    *  - ttl=3600
    *  - tbd=3600
-   *  - path=$TMPDIR/hdc
+   *  - path=os.tmpdir()/hdc
+   *  - dbPath=os.tmpdir/hdc/cache.db
    * @returns the hdc cache instance
    */
   constructor(conf?: CacheOptions) {
@@ -18,7 +19,8 @@ export class Adapter {
   }
 
   async init() {
-    console.log(`  Cache located at ${this.cache.path}`)
+    console.log(`  File cache located at ${this.cache.path}`)
+    console.log(`  Database located at ${this.cache.dbPath}`)
     // purge timer
     this.initPurgeTimer()
     return this.cache

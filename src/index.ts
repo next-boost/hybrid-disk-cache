@@ -2,7 +2,17 @@ import SQLite3, { Database } from 'better-sqlite3'
 import fs from 'fs-extra'
 import { join as pathJoin } from 'path'
 
-import { md5name, purgeEmptyPath, read, write } from './utils'
+import {
+  createDirectoryIfDoesNotExists,
+  getDatabasePath,
+  getFileCachePath,
+  hasPersistentDatabaseLocation,
+  md5name,
+  removeFile,
+  purgeEmptyPath,
+  read,
+  write,
+} from './utils'
 
 export { Adapter } from './adapter'
 
@@ -15,6 +25,7 @@ type CacheStatus = 'hit' | 'stale' | 'miss'
 
 export interface CacheOptions {
   path?: string
+  dbPath?: '' | ':memory:' | string
   ttl?: number
   tbd?: number
 }
@@ -23,15 +34,21 @@ class Cache {
   db: Database
   ttl = 3600 // time to live
   tbd = 3600 // time before deletion
-  path = pathJoin(process.env.TMPDIR || '/tmp', 'hdc')
+  public path: string
+  public dbPath: string
 
-  constructor({ path, ttl, tbd }: CacheOptions = {}) {
-    if (path) this.path = path
-    fs.mkdirpSync(this.path)
+  constructor({ path, ttl, tbd, dbPath }: CacheOptions = {}) {
+    this.path = getFileCachePath(path)
+    this.dbPath = getDatabasePath(dbPath)
+
+    createDirectoryIfDoesNotExists(this.path)
+    if (hasPersistentDatabaseLocation(this.dbPath))
+      createDirectoryIfDoesNotExists(this.dbPath)
+
     if (ttl) this.ttl = ttl
     if (tbd) this.tbd = tbd
 
-    const db = new SQLite3(pathJoin(this.path, 'cache.db'))
+    const db = new SQLite3(this.dbPath)
     db.exec('PRAGMA journal_mode = WAL')
     for (const s of DDL.trim().split('\n')) {
       db.prepare(s).run()
@@ -44,8 +61,8 @@ class Cache {
 
     const insert = this.db.prepare(
       'INSERT INTO cache (key, value, filename, ttl) VALUES (@key, @value, @filename, @valid)' +
-        ' ON CONFLICT(key)' +
-        ' DO UPDATE SET value = @value, ttl = @valid, filename = @filename'
+      ' ON CONFLICT(key)' +
+      ' DO UPDATE SET value = @value, ttl = @valid, filename = @filename',
     )
     let filename = null
     // larger than 10KB
@@ -99,8 +116,14 @@ class Cache {
       .all(now)
     this.db.prepare('DELETE FROM cache WHERE ttl < ?').run(now)
     for (const row of rows) this._delFile(row.filename)
-    purgeEmptyPath(this.path)
+    await purgeEmptyPath(this.path)
     return rows.length
+  }
+
+  async destroyDatabase() {
+    if (hasPersistentDatabaseLocation(this.dbPath)) {
+      await removeFile(this.dbPath)
+    }
   }
 }
 
