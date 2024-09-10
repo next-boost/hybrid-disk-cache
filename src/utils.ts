@@ -30,7 +30,7 @@ async function purge(dir: string): Promise<boolean> {
     empty = stat.isDirectory() ? (await purge(sub)) && empty : false
   }
 
-  if (empty) await fs.rmdir(dir)
+  if (empty) await fs.rmdir(dir).catch(() => {})
   return empty
 }
 
