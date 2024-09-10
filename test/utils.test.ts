@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { expect, describe, it } from 'vitest'
 import fs from 'fs-extra'
 import { join as pathJoin } from 'path'
 import { purgeEmptyPath } from '../src/utils'
@@ -21,14 +21,14 @@ describe('utils', () => {
 
     await purgeEmptyPath(root)
 
-    expect(fs.existsSync(pAA)).to.be.false
-    expect(fs.existsSync(pBA)).to.be.false
-    expect(fs.existsSync(pB)).to.be.true
-    expect(fs.existsSync(pCA)).to.be.true
-    expect(fs.existsSync(pD)).to.be.false
+    expect(fs.existsSync(pAA)).toBe(false)
+    expect(fs.existsSync(pBA)).toBe(false)
+    expect(fs.existsSync(pB)).toBe(true)
+    expect(fs.existsSync(pCA)).toBe(true)
+    expect(fs.existsSync(pD)).toBe(false)
   })
 
   it('no error on non-exist directory', async () => {
-    await purgeEmptyPath('/tmp/not-hello-123')
+    await expect(purgeEmptyPath('/tmp/not-hello-123')).resolves.not.toThrow()
   })
 })

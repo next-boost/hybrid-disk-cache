@@ -7,8 +7,8 @@
     "build": "tsc",
     "prepublishOnly": "rm -rf dist && yarn build",
     "lint": "eslint src/*.ts test/*.ts",
-    "test": "NODE_ENV=test mocha --require ts-node/register test/**/*.test.ts",
-    "test-cov": "NODE_ENV=test nyc mocha test/*.test.ts"
+    "test": "vitest",
+    "test-cov": "vitest --coverage --coverage.exclude=src/bench.ts --coverage.exclude=test/*.ts"
   },
   "files": [
     "dist",
@@ -25,26 +25,23 @@
   },
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^8.5.2",
-    "fs-extra": "^10.0.0"
+    "better-sqlite3": "^11.3.0",
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.4.0",
-    "@types/chai": "^4.2.12",
-    "@types/fs-extra": "^9.0.1",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.7.10",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "chai": "^4.2.0",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "mocha": "^9.1.1",
-    "nyc": "^15.1.0",
-    "prettier": "^2.1.2",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.0.3"
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.5.4",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "vitest": "^2.0.5"
   },
   "nyc": {
     "include": [
