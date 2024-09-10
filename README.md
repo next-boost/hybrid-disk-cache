@@ -2,27 +2,27 @@
 
 # hybrid-disk-cache
 
-A hybrid disk cache library that utilized both the solid SQLite3 database and the file system.
+A hybrid disk cache library that utilizes both a solid SQLite3 database and the file system.
 
 ```bash
 yarn add @next-boost/hybrid-disk-cache
 ```
 
-When the value is larger than 10 kilobytes, it will be written to the file system, otherwise saved in SQLite3 database.
+When the value is larger than 10 kilobytes, it will be written to the file system; otherwise, it's saved in the SQLite3 database.
 
-The benefits of using this kind of hybrid cache are:
+The benefits of using this hybrid cache are:
 
-- Always use the small footprint and high performace SQLite3 index.
-- Using file system for larger files. No need to run `vacuum` for releasing space
+- Always uses the small footprint and high-performance SQLite3 index.
+- Uses the file system for larger files. No need to run `vacuum` for releasing space.
 
-Also, here are some bonus:
+Additional features:
 
 - 100% test coverage
-- Pure Typescript
+- Pure TypeScript
 - Used in production with 300K keys
-- SQLite3's indices will always be used when searching for a key. (which is FAST)
+- SQLite3's indices are always used when searching for a key (which is FAST)
 
-This hybrid idea is inspired by [`python-diskcache`](https://github.com/grantjenks/python-diskcache). We used it in our Python production stack, and it works just as great as what we'd expected.
+This hybrid idea is inspired by [`python-diskcache`](https://github.com/grantjenks/python-diskcache). We use it in our Python production stack, and it works just as well as expected.
 
 ## APIs
 
@@ -49,12 +49,12 @@ const status = cache.has(key)
 
 // if you want to serve even the stale value
 if (cache.has(key) !== 'miss') {
-    const value = cache.get(key)
+  const value = cache.get(key)
 }
 
 // if you only want the unexpired one
 if (cache.has(key) === 'hit') {
-    const value = cache.get(key)
+  const value = cache.get(key)
 }
 
 // delete all expired keys
@@ -80,4 +80,4 @@ Here is the [benchmark source code](https://github.com/next-boost/hybrid-disk-ca
 
 ## License
 
-MIT. Copyright 2020, Rakuraku Jyo.
+MIT. Copyright 2024, Rakuraku Jyo.
