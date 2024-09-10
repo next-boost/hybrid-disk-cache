@@ -1,6 +1,6 @@
 {
   "name": "@next-boost/hybrid-disk-cache",
-  "version": "0.3.0",
+  "version": "0.2.2",
   "description": "A hybrid disk cache utilize both the database and the file system.",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/next-boost/hybrid-disk-cache",
   "repository": {
     "type": "git",
-    "url": "https://github.com/next-boost//hybrid-disk-cache.git"
+    "url": "https://github.com/next-boost/hybrid-disk-cache.git"
   },
   "license": "MIT",
   "dependencies": {
