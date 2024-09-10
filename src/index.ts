@@ -13,6 +13,13 @@ CREATE INDEX IF NOT EXISTS cache_ttl ON cache (ttl);
 
 type CacheStatus = 'hit' | 'stale' | 'miss'
 
+type CacheRow = {
+  key: string
+  value: Buffer
+  filename: string
+  ttl: number
+}
+
 export interface CacheOptions {
   path?: string
   ttl?: number
@@ -64,7 +71,9 @@ class Cache {
 
   async get(key: string, defaultValue?: Buffer): Promise<Buffer | undefined> {
     const rv = this.db
-      .prepare('SELECT value, filename FROM cache WHERE key = ?')
+      .prepare<string, CacheRow>(
+        'SELECT value, filename FROM cache WHERE key = ?'
+      )
       .get(key)
     if (!rv) return defaultValue
     if (rv && rv.filename) rv.value = read(this.path, rv.filename)
@@ -73,16 +82,18 @@ class Cache {
 
   async has(key: string): Promise<CacheStatus> {
     const now = new Date().getTime() / 1000
-    const rv = this.db.prepare('SELECT ttl FROM cache WHERE key = ?').get(key)
+    const rv = this.db
+      .prepare<string, CacheRow>('SELECT ttl FROM cache WHERE key = ?')
+      .get(key)
     return !rv ? 'miss' : rv.ttl > now ? 'hit' : 'stale'
   }
 
   async del(key: string) {
     const rv = this.db
-      .prepare('SELECT filename FROM cache WHERE key = ?')
+      .prepare<string, CacheRow>('SELECT filename FROM cache WHERE key = ?')
       .get(key)
     this.db.prepare('DELETE FROM cache WHERE key = ?').run(key)
-    this._delFile(rv?.filename)
+    if (rv) this._delFile(rv.filename)
   }
 
   _delFile(filename: string) {
@@ -95,10 +106,12 @@ class Cache {
     // ttl + tbd < now => ttl < now - tbd
     const now = new Date().getTime() / 1000 - this.tbd
     const rows = this.db
-      .prepare('SELECT key, filename FROM cache WHERE ttl < ?')
+      .prepare<number, CacheRow>(
+        'SELECT key, filename FROM cache WHERE ttl < ?'
+      )
       .all(now)
     this.db.prepare('DELETE FROM cache WHERE ttl < ?').run(now)
-    for (const row of rows) this._delFile(row.filename)
+    for (const row of rows) if (row) this._delFile(row.filename)
     purgeEmptyPath(this.path)
     return rows.length
   }
