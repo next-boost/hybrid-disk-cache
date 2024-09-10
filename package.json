@@ -8,7 +8,7 @@
     "prepublishOnly": "rm -rf dist && yarn build",
     "lint": "prettier -c test/*.ts",
     "test": "vitest",
-    "test-cov": "vitest --coverage --coverage.exclude=src/bench.ts --coverage.exclude=test/*.ts"
+    "test-cov": "vitest --coverage --coverage.exclude=src/adapter.ts --coverage.exclude=src/bench.ts --coverage.exclude=test/*.ts"
   },
   "files": [
     "dist",
