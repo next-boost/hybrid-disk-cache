@@ -4,7 +4,7 @@ import path from 'path'
 
 export function write(dir: string, filename: string, data: Buffer) {
   const file = path.join(dir, filename)
-  fs.mkdirpSync(file.slice(0, file.lastIndexOf('/')))
+  fs.mkdirpSync(path.dirname(file))
   return fs.writeFileSync(file, data)
 }
 
